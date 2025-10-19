@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.redBrickWrapper {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #DB4444;
+  gap: 20px;
+  font-size: 16px;
+  margin-bottom: 10px;
+
+  & .redBrick {
+    width: 20px;
+    height: 40px;
+    border-radius: 3px;
+    background: #DB4444;
+  }
+}
+
+.flashSalesTitle {
+  font-size: 32px;
+  letter-spacing: 1px;
+}
