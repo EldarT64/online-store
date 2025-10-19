@@ -2,6 +2,7 @@ import {PATHS} from "./paths.js";
 import MainPage from "../pages/MainPage/MainPage.jsx";
 import Layout from "../components/Layout/Layout.jsx";
 import Registration from "../pages/Registration/Registration.jsx";
+import Login from "../pages/Login/Login.jsx";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute.jsx";
 
 const routes = [
@@ -20,7 +21,11 @@ const routes = [
     {
         path: PATHS.REGISTER_PAGE,
         element: <Registration/>,
-    }
+    },
+    {
+        path: PATHS.LOGIN_PAGE,
+        element: <Login/>,
+    },
 ]
 
 export default routes;

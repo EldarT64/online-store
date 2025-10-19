@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import registration from '../../assets/registration_page_image.svg';
 import styles from './Registration.module.scss';
 import {Link, Navigate, useNavigate} from 'react-router';
@@ -10,23 +10,22 @@ const Registration = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    const { register, error, loading } = useUserStore();
+    const { register, error, loading, clearLoginAndRegisterError } = useUserStore();
+
+    useEffect(() => {
+        return () => {
+            clearLoginAndRegisterError();
+        };
+    }, [clearLoginAndRegisterError]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        // if (!emailRegex.test(email)) {
-        //     alert('Введите корректный email');
-        //     return;
-        // }
-
         const success = await register({ name, email, password });
 
         if (success) {
-            navigate('/products'); // например, переходим на страницу логина
+            navigate('/products');
         }
     };
 
@@ -34,8 +33,8 @@ const Registration = () => {
     const emailError = error?.toLowerCase().includes('пользователь') || error?.toLowerCase().includes('email') ? error : '';
     const passwordError = password.length < 6 && error ? 'Пароль должен быть не менее 6 символов' : '';
 
-    const token = localStorage.getItem('accessToken');
-    if (token) return <Navigate to="/" replace />;
+    const token = localStorage.getItem('token');
+    if (token) return <Navigate to="/products" replace />;
 
     return (
         <div className={styles.registerPage}>
@@ -67,7 +66,7 @@ const Registration = () => {
                             <TextField
                                 label="Пароль"
                                 variant="standard"
-                                type={isPasswordVisible ? "text" : "password"}
+                                type={"password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 error={!!passwordError}

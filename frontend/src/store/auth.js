@@ -38,13 +38,17 @@ const useUserStore = create((set) => ({
         try {
             const user = await loginUser({ email, password });
             set({ user, token: localStorage.getItem('token'), loading: false });
+            return true;
         } catch (err) {
             set({
                 error: err.response?.data?.message || 'Ошибка сервера',
                 loading: false
             });
+            return false;
         }
     },
+
+    clearLoginAndRegisterError: () => set({error: null}),
 
     logout: () => {
         localStorage.removeItem('token');
