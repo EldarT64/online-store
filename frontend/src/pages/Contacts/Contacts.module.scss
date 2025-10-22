@@ -1,0 +1,163 @@
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 10px;
+  margin: 60px auto;
+}
+
+/* Главный блок */
+.contacts {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Левая колонка */
+.infoBlock {
+  flex: 1 1 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .callUs, .writeUs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 25px;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    h5 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    span {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+  }
+}
+
+/* Форма */
+.contactForm {
+  flex: 1 1 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: #db4444;
+      outline: none;
+    }
+  }
+
+  button {
+    background: #db4444;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #b93232;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .contacts {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .infoBlock,
+  .contactForm {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .contactForm {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    input,
+    textarea {
+      font-size: 14px;
+    }
+
+    button {
+      font-size: 15px;
+      padding: 12px;
+      width: 100%;
+    }
+  }
+
+  .infoBlock {
+    width: 100%;
+
+    .callUs,
+    .writeUs {
+      width: 100%;
+      padding: 20px;
+
+      h5 {
+        font-size: 18px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .contactForm {
+    padding: 16px;
+
+    button {
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+}

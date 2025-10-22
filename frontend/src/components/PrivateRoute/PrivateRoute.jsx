@@ -1,11 +1,10 @@
-import { useAuth } from '../../hooks/useAuth.js';
-import {Navigate} from "react-router";
+import { Navigate } from "react-router";
+import useUserStore from "../../store/auth.js";
 
 const PrivateRoute = ({ children }) => {
-    const { data: user, isLoading } = useAuth();
+    const { user, isGetMeLoading } = useUserStore();
 
-    if (isLoading) return <div>Загрузка...</div>;
-
+    if (isGetMeLoading) return <div>Loading...</div>;
     if (!user) return <Navigate to="/login" replace />;
 
     return children;

@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from './Header.module.scss';
-import { Link, NavLink } from "react-router";
+import {Link, NavLink} from "react-router";
 import wishList from '../../assets/wishlist.svg';
 import cart from '../../assets/cartIcon.svg';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import useUserStore from "../../store/auth.js";
 
 const Header = () => {
+    const {user} = useUserStore();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
         document.body.style.overflow = menuOpen ? "auto" : "hidden";
+    };
+
+    const closeMenu = () => {
+        setMenuOpen(false);
+        document.body.style.overflow = "auto";
     };
 
     return (
@@ -21,16 +28,45 @@ const Header = () => {
                     <h2 className={styles.shopName}>Shopify</h2>
 
                     <div className={styles.burger} onClick={toggleMenu}>
-                        {menuOpen ? <CloseIcon sx={{ fontSize: 32 }} /> : <MenuIcon sx={{ fontSize: 32 }} />}
+                        {menuOpen ? <CloseIcon sx={{fontSize: 32}}/> : <MenuIcon sx={{fontSize: 32}}/>}
                     </div>
 
                     <div className={`${styles.headerMenuList} ${menuOpen ? styles.menuOpen : ''}`}>
                         <ul>
                             <li>
-                                <NavLink to="/" className={({ isActive }) => isActive ? styles.activeLink : styles.link}>Главная</NavLink>
-                                <NavLink to="/contact" className={({ isActive }) => isActive ? styles.activeLink : styles.link}>Контакты</NavLink>
-                                <NavLink to="/about" className={({ isActive }) => isActive ? styles.activeLink : styles.link}>О нас</NavLink>
-                                <NavLink to="/register" className={({ isActive }) => isActive ? styles.activeLink : styles.link}>Регистрация</NavLink>
+                                <NavLink
+                                    to="/"
+                                    onClick={closeMenu}
+                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                >
+                                    Главная
+                                </NavLink>
+
+                                <NavLink
+                                    to="/contacts"
+                                    onClick={closeMenu}
+                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                >
+                                    Контакты
+                                </NavLink>
+
+                                <NavLink
+                                    to="/about"
+                                    onClick={closeMenu}
+                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                >
+                                    О нас
+                                </NavLink>
+
+                                {user ? null : (
+                                    <NavLink
+                                        to="/register"
+                                        onClick={closeMenu}
+                                        className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                    >
+                                        Регистрация
+                                    </NavLink>
+                                )}
                             </li>
                         </ul>
                     </div>
@@ -38,10 +74,10 @@ const Header = () => {
                     <div className={styles.headerMenuIcons}>
                         <ul>
                             <li>
-                                <Link to="/wishlist">
+                                <Link to="/wishlist" onClick={closeMenu}>
                                     <img src={wishList} alt="wishlist"/>
                                 </Link>
-                                <Link to="/cart">
+                                <Link to="/cart" onClick={closeMenu}>
                                     <img src={cart} alt="cart"/>
                                 </Link>
                             </li>

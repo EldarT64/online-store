@@ -57,7 +57,7 @@ const useUserStore = create((set) => ({
 
     loadUser: async () => {
         set({ isGetMeLoading: true });
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             set({ isGetMeLoading: false });
             return;
@@ -65,9 +65,10 @@ const useUserStore = create((set) => ({
         try {
             const user = await getMe();
             set({ user, isGetMeLoading: false });
-        } catch {
-            localStorage.removeItem('accessToken');
-            set({ user: null, token: null, isGetMeLoading: false });
+        } catch (err){
+            console.error('loadUser error:', err?.response?.data || err.message);
+            // localStorage.removeItem('token'); ❌ отключи
+            set({ user: null, isGetMeLoading: false });
         }
     }
 }));
