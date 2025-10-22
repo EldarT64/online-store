@@ -1,0 +1,200 @@
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+/* Our Story */
+.ourStory {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 80px 0;
+
+  h2 {
+    font-size: 48px;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  p {
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  img {
+    max-width: 50%;
+    height: auto;
+  }
+}
+
+/* Achievements */
+.achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 40px;
+
+  .achievementsBlock {
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    img {
+      margin-bottom: 15px;
+      width: 60px;
+      height: 60px;
+    }
+
+    span:first-of-type {
+      font-weight: bold;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    span:last-of-type {
+      font-size: 16px;
+      color: #555;
+    }
+  }
+}
+
+/* People */
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 80px;
+
+  .peopleBox {
+    flex: 1 1 30%;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: 28px;
+      margin: 10px 0;
+    }
+
+    span {
+      display: inline-block;
+      margin: 3px 0 10px 0;
+    }
+
+    .peopleSocials {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+
+      img {
+        background-color: #000;
+        padding: 5px;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+}
+
+/* Features */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 80px;
+
+  .featureBox {
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    img {
+      margin-bottom: 15px;
+      width: 60px;
+      height: 60px;
+    }
+
+    h4 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    span {
+      font-size: 16px;
+      color: #555;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .ourStory {
+    flex-direction: column;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .achievements, .people, .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .achievementsBlock, .peopleBox, .featureBox {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .ourStory h2 {
+    font-size: 36px;
+  }
+
+  .peopleBox h4 {
+    font-size: 22px;
+  }
+
+  .featureBox h4 {
+    font-size: 18px;
+  }
+
+  .featureBox img, .achievementsBlock img {
+    width: 50px;
+    height: 50px;
+  }
+}

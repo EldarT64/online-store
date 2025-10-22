@@ -4,6 +4,7 @@ import Layout from "../components/Layout/Layout.jsx";
 import Registration from "../pages/Registration/Registration.jsx";
 import Login from "../pages/Login/Login.jsx";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute.jsx";
+import AboutUs from "../pages/AboutUs/AboutUs.jsx";
 
 const routes = [
     {
@@ -25,6 +26,10 @@ const routes = [
     {
         path: PATHS.LOGIN_PAGE,
         element: <Login/>,
+    },
+    {
+        path: PATHS.ABOUT_US_PAGE,
+        element: <AboutUs/>,
     },
 ]
 
