@@ -1,0 +1,57 @@
+.notFoundWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.container {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #000; // красный цвет для акцента
+}
+
+.text {
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.button {
+  background-color: #db4444; // красный фон
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #cc0000;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 36px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .button {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
