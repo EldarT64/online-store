@@ -1,0 +1,84 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.flashSalesTitle {
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.productsGrid {
+  display: flex;
+  flex-wrap: wrap;        /* разрешаем перенос */
+  gap: 20px;              /* расстояние между карточками */
+  justify-content: flex-start; /* выравнивание по левому краю */
+  width: 100%;
+  min-width: 1280px;
+}
+
+.productCard {
+  flex: 0 1 220px;       /* фиксированная минимальная ширина карточки, расширяется при необходимости */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  .cardImageWrapper {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: #f8f8f8;
+
+    .cardImage {
+      object-fit: contain;
+      max-height: 100%;
+      width: 100%;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .iconGroup {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    align-items: center;
+
+    .addToCartButton {
+      flex-grow: 1;
+      text-transform: none;
+      font-weight: 600;
+    }
+
+    .deleteButton {
+      margin-left: 10px;
+      color: #DB4444;
+    }
+  }
+
+  .cardContent {
+    padding: 10px 15px;
+
+    .productName {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .productPrice {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+

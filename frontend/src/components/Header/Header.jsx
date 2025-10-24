@@ -34,13 +34,15 @@ const Header = () => {
                     <div className={`${styles.headerMenuList} ${menuOpen ? styles.menuOpen : ''}`}>
                         <ul>
                             <li>
-                                <NavLink
-                                    to="/"
-                                    onClick={closeMenu}
-                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
-                                >
-                                    Main Page
-                                </NavLink>
+                                {user ? (
+                                    <NavLink
+                                        to="/"
+                                        onClick={closeMenu}
+                                        className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                    >
+                                        Main Page
+                                    </NavLink>
+                                ) : null}
 
                                 <NavLink
                                     to="/contacts"
@@ -77,29 +79,33 @@ const Header = () => {
                                 {/*        Create Product*/}
                                 {/*    </NavLink>*/}
                                 {/*) : null}*/}
-                                <NavLink
-                                    to="/create-product"
-                                    onClick={closeMenu}
-                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
-                                >
-                                    Create Product
-                                </NavLink>
+                                {user ? (
+                                    <NavLink
+                                        to="/create-product"
+                                        onClick={closeMenu}
+                                        className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                    >
+                                        Create Product
+                                    </NavLink>
+                                ) : null}
                             </li>
                         </ul>
                     </div>
 
-                    <div className={styles.headerMenuIcons}>
-                        <ul>
-                            <li>
-                                <Link to="/wishlist" onClick={closeMenu}>
-                                    <img src={wishList} alt="wishlist"/>
-                                </Link>
-                                <Link to="/cart" onClick={closeMenu}>
-                                    <img src={cart} alt="cart"/>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                    {user ? (
+                        <div className={styles.headerMenuIcons}>
+                            <ul>
+                                <li>
+                                    <Link to="/wishlist" onClick={closeMenu}>
+                                        <img src={wishList} alt="wishlist"/>
+                                    </Link>
+                                    <Link to="/cart" onClick={closeMenu}>
+                                        <img src={cart} alt="cart"/>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    ) : null}
                 </div>
             </div>
         </header>

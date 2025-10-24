@@ -6,6 +6,7 @@ import watches from '../../assets/main_page_watch.svg';
 import camera from '../../assets/main_page_camera.svg';
 import headphones from '../../assets/main_page_headphone.svg';
 import game from '../../assets/main_page_game.svg';
+import wishList from '../../assets/wishlist.svg';
 import Divider from '@mui/material/Divider';
 import config from '../../api/config.js';
 import { Delete } from '@mui/icons-material';
@@ -15,13 +16,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-
 import { getAllCategories } from '../../api/categories.js';
-import { getAllProducts, getProductsByCategory, deleteProductById} from "../../api/products.js";
+import { getAllProducts, getProductsByCategory, deleteProductById } from "../../api/products.js";
 import { useNavigate } from "react-router";
 import bus from "../../assets/bus.svg";
 import guard from "../../assets/guard.svg";
 import { Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
+import {addToWishlist, getWishlistByUser, removeFromWishlist} from '../../api/wishlist.js';
+import useUserStore from "../../store/auth.js";
 
 const MainPage = () => {
     const [categories, setCategories] = useState([]);
@@ -29,7 +31,9 @@ const MainPage = () => {
     const [activeCategory, setActiveCategory] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [wishlist, setWishlist] = useState([]);
     const navigate = useNavigate();
+    const {user} = useUserStore();
 
     const categoryImages = {
         Phones: phones,
@@ -56,7 +60,7 @@ const MainPage = () => {
         const fetchProducts = async () => {
             try {
                 const data = await getAllProducts();
-                setProducts(data.slice(0, 8)); // показываем только первые 8
+                setProducts(data.slice(0, 8));
             } catch (error) {
                 console.error('Ошибка при загрузке продуктов:', error);
             }
@@ -64,25 +68,44 @@ const MainPage = () => {
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        const fetchWishlist = async () => {
+            try {
+                const data = await getWishlistByUser(user._id); // делаем запрос к серверу
+                const productIds = data.map(p => p._id); // вытаскиваем id товаров
+                setWishlist(productIds); // сохраняем в стейт
+            } catch (error) {
+                console.error("Ошибка при загрузке вишлиста:", error);
+            }
+        };
+        if (user?._id) fetchWishlist(); // проверка, что user есть
+    }, [user]);
+
     const handleCategoryClick = async (categoryId) => {
         if (activeCategory === categoryId) {
-            // Сбрасываем категорию
             setActiveCategory(null);
-            try {
-                const data = await getAllProducts();
-                setProducts(data.slice(0, 8));
-            } catch (error) {
-                console.error('Ошибка при загрузке продуктов:', error);
-            }
+            const data = await getAllProducts();
+            setProducts(data.slice(0, 8));
         } else {
-            // Выбираем категорию
             setActiveCategory(categoryId);
-            try {
-                const data = await getProductsByCategory(categoryId);
-                setProducts(data.slice(0, 8));
-            } catch (error) {
-                console.error('Ошибка при загрузке продуктов по категории:', error);
+            const data = await getProductsByCategory(categoryId);
+            setProducts(data.slice(0, 8));
+        }
+    };
+
+    const toggleWishlist = async (productId) => {
+        try {
+            if (wishlist.includes(productId)) {
+                // Удаляем из вишлиста
+                await removeFromWishlist(user._id, productId);
+                setWishlist(prev => prev.filter(id => id !== productId));
+            } else {
+                // Добавляем в вишлист
+                await addToWishlist(user._id, productId);
+                setWishlist(prev => [...prev, productId]);
             }
+        } catch (error) {
+            console.error("Ошибка при обновлении вишлиста:", error);
         }
     };
 
@@ -111,7 +134,6 @@ const MainPage = () => {
     return (
         <div className={styles.mainPage}>
             <div className={styles.container}>
-                {/* Категории */}
                 <div className={styles.redBrickWrapper}>
                     <div className={styles.redBrick}></div>
                     <span>Categories</span>
@@ -143,7 +165,6 @@ const MainPage = () => {
 
                 <Divider sx={{ mb: '50px' }} />
 
-                {/* Продукты */}
                 <div className={styles.products}>
                     <div className={styles.redBrickWrapper}>
                         <div className={styles.redBrick}></div>
@@ -153,37 +174,62 @@ const MainPage = () => {
 
                     <div className={styles.productsGrid}>
                         {products.length > 0 ? (
-                            products.map((product) => (
-                                <Card key={product._id} className={styles.productCard}>
-                                    <div className={styles.cardImageWrapper}>
-                                        <CardMedia
-                                            component="img"
-                                            image={config.IMAGE_BASE_URL + product.image}
-                                            alt={product.name}
-                                            onClick={() => navigate(`/edit-product/${product._id}`)}
-                                            className={styles.cardImage}
-                                        />
-                                        <IconButton
-                                            className={styles.deleteButton}
-                                            onClick={() => handleOpenDialog(product._id)}
-                                        >
-                                            <Delete />
-                                        </IconButton>
-                                    </div>
-                                    <CardContent className={styles.cardContent}>
-                                        <Typography variant="subtitle1" component="div" className={styles.productName}>
-                                            {product.name}
-                                        </Typography>
-                                        <Typography variant="h6" color="error" className={styles.productPrice}>
-                                            ${product.price}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            ))
+                            products.map((product) => {
+                                const isLiked = wishlist.includes(product._id);
+                                return (
+                                    <Card key={product._id} className={styles.productCard}>
+                                        {/* Иконки вынесены над картинкой */}
+                                        <div className={styles.iconGroup}>
+                                            <IconButton
+                                                className={styles.wishlistButton}
+                                                onClick={() => toggleWishlist(product._id)}
+                                            >
+                                                <img
+                                                    src={wishList}
+                                                    alt="wishlist"
+                                                    className={styles.iconImg}
+                                                    style={{
+                                                        filter: isLiked
+                                                            ? 'invert(27%) sepia(97%) saturate(7471%) hue-rotate(352deg) brightness(89%) contrast(119%)'
+                                                            : 'invert(0%)',
+                                                    }}
+                                                />
+                                            </IconButton>
+
+                                            <IconButton
+                                                className={styles.deleteButton}
+                                                onClick={() => handleOpenDialog(product._id)}
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        </div>
+
+                                        <div className={styles.cardImageWrapper}>
+                                            <CardMedia
+                                                component="img"
+                                                image={config.IMAGE_BASE_URL + product.image}
+                                                alt={product.name}
+                                                onClick={() => navigate(`/edit-product/${product._id}`)}
+                                                className={styles.cardImage}
+                                            />
+                                        </div>
+
+                                        <CardContent className={styles.cardContent}>
+                                            <Typography variant="subtitle1" component="div" className={styles.productName}>
+                                                {product.name}
+                                            </Typography>
+                                            <Typography variant="h6" color="error" className={styles.productPrice}>
+                                                ${product.price}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                );
+                            })
                         ) : (
                             <p>No products</p>
                         )}
                     </div>
+
                 </div>
 
                 <div className={styles.features}>
@@ -211,7 +257,6 @@ const MainPage = () => {
                 </div>
             </div>
 
-            {/* Диалог подтверждения удаления */}
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Delete Product</DialogTitle>
                 <DialogContent>

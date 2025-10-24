@@ -81,6 +81,12 @@ const Registration = () => {
                             >
                                 {loading ? 'Создание...' : 'Создать аккаунт'}
                             </Button>
+
+                            {error && (
+                                <div className={styles.formError}>
+                                    {error}
+                                </div>
+                            )}
                         </form>
                         <div className={styles.alreadyHaveAccount}>
                             <span>Уже есть аккаунт ? </span>

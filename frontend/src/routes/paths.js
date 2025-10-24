@@ -6,4 +6,5 @@ export const PATHS = {
     LOGIN_PAGE: '/login',
     CREATE_PRODUCT_PAGE: '/create-product',
     EDIT_PRODUCT_PAGE: '/edit-product/:id',
+    WISHLIST_PAGE: '/wishlist',
 };

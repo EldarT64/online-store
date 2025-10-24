@@ -9,6 +9,7 @@ import Contacts from "../pages/Contacts/Contacts.jsx";
 import NotFound from "../pages/NotFound/NotFound.jsx";
 import CreateProduct from "../pages/CreateProduct/CreateProduct.jsx";
 import EditProduct from "../pages/EditProduct/EditProduct.jsx";
+import Wishlist from "../pages/Wishlist/Wishlist.jsx";
 
 const routes = [
     {
@@ -28,6 +29,10 @@ const routes = [
             {
                 path: PATHS.EDIT_PRODUCT_PAGE,
                 element: <EditProduct/>,
+            },
+            {
+                path: PATHS.WISHLIST_PAGE,
+                element: <Wishlist/>,
             },
         ],
     },

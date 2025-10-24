@@ -18,7 +18,7 @@ const Login = () => {
         const success = await login({email, password});
 
         if (success) {
-            navigate('/products');
+            navigate('/');
         }
     };
 
@@ -64,6 +64,12 @@ const Login = () => {
                             >
                                 {loading ? 'Вход...' : 'Войти'}
                             </Button>
+
+                            {error && (
+                                <div className={styles.formError}>
+                                    {error}
+                                </div>
+                            )}
                         </form>
                         <div className={styles.alreadyHaveAccount}>
                             <span>Нет аккаунта ? </span>

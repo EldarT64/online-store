@@ -135,25 +135,6 @@
     &:hover .cardImage {
       transform: scale(1.05);
     }
-
-    .deleteButton {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 50%;
-      padding: 6px;
-      cursor: pointer;
-      color: #DB4444;
-      transition: all 0.2s ease;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-      &:hover {
-        transform: scale(1.15);
-        background: #fff;
-      }
-    }
   }
 
   .cardContent {
@@ -240,6 +221,46 @@
 .products {
   margin-bottom: 50px;
 }
+
+
+.iconGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;  /* выравниваем справа */
+  gap: 10px;              /* расстояние между иконками */
+  margin-bottom: 10px;    /* отступ снизу, чтобы не слипались с картинкой */
+  margin-top: 10px;    /* отступ снизу, чтобы не слипались с картинкой */
+}
+
+.iconGroup button {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.iconGroup button:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+.iconGroup img,
+.iconGroup svg {
+  width: 20px;
+  height: 20px;
+  color: #DB4444;
+}
+
+
 
 /* ---------- Адаптивность ---------- */
 @media (max-width: 1200px) {
