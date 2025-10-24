@@ -1,3 +1,7 @@
+.mainPage {
+  padding-top: 60px;
+}
+
 .container {
   width: 100%;
   max-width: 1280px;
@@ -14,7 +18,7 @@
   font-size: 16px;
   margin-bottom: 10px;
 
-  & .redBrick {
+  .redBrick {
     width: 20px;
     height: 40px;
     border-radius: 3px;
@@ -25,4 +29,345 @@
 .flashSalesTitle {
   font-size: 32px;
   letter-spacing: 1px;
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+.categoriesWrapper {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.categoryBox {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+  justify-items: center;
+}
+
+.categoryItem {
+  width: 180px;
+  height: 180px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .categoryImage {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    transition: filter 0.3s ease;
+  }
+
+  span {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  &.active {
+    background-color: #DB4444;
+    border-color: #DB4444;
+
+    .categoryImage {
+      filter: brightness(0) invert(1);
+    }
+
+    span {
+      color: #fff;
+    }
+  }
+}
+
+/* ---------- Улучшенные карточки продуктов ---------- */
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.productCard {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .cardImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Фиксированная высота для всех изображений */
+    overflow: hidden;
+    background: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    .cardImage {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Все изображения одинакового размера */
+      transition: transform 0.3s ease;
+    }
+
+    &:hover .cardImage {
+      transform: scale(1.05);
+    }
+
+    .deleteButton {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      padding: 6px;
+      cursor: pointer;
+      color: #DB4444;
+      transition: all 0.2s ease;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+      &:hover {
+        transform: scale(1.15);
+        background: #fff;
+      }
+    }
+  }
+
+  .cardContent {
+    padding: 20px 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .productName {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-height: 40px;
+    }
+
+    .productPrice {
+      font-size: 18px;
+      color: #DB4444;
+      font-weight: bold;
+      margin-top: auto;
+    }
+  }
+}
+
+/* ---------- Блок фич ---------- */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin: 80px 0;
+
+  .featureBox {
+    flex: 0 1 30%;
+    min-width: 250px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .featureContent {
+      img {
+        margin-bottom: 20px;
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+      }
+
+      h4 {
+        margin-bottom: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      span {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+.products {
+  margin-bottom: 50px;
+}
+
+/* ---------- Адаптивность ---------- */
+@media (max-width: 1200px) {
+  .productsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .flashSalesTitle {
+    font-size: 28px;
+  }
+
+  .categoryItem {
+    width: 160px;
+    height: 160px;
+
+    .categoryImage {
+      width: 55px;
+      height: 55px;
+    }
+  }
+
+  .productCard .cardImageWrapper {
+    height: 220px;
+  }
+
+  .features {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .flashSalesTitle {
+    font-size: 24px;
+  }
+
+  .categoryBox {
+    gap: 20px;
+  }
+
+  .categoryItem {
+    width: 140px;
+    height: 140px;
+    padding: 15px;
+
+    .categoryImage {
+      width: 50px;
+      height: 50px;
+    }
+
+    span {
+      font-size: 16px;
+    }
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .productCard .cardImageWrapper {
+    height: 200px;
+    padding: 15px;
+  }
+
+  .productCard .cardContent {
+    padding: 15px 12px;
+
+    .productName {
+      font-size: 15px;
+      min-height: 36px;
+    }
+
+    .productPrice {
+      font-size: 16px;
+    }
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flashSalesTitle {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .categoryBox {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .categoryItem {
+    width: 130px;
+    height: 130px;
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .productCard .cardImageWrapper {
+    height: 160px;
+    padding: 12px;
+  }
+
+  .productCard .cardContent {
+    padding: 12px 10px;
+
+    .productName {
+      font-size: 14px;
+      min-height: 32px;
+    }
+
+    .productPrice {
+      font-size: 15px;
+    }
+  }
+
+  .features .featureBox {
+    min-width: 100%;
+    padding: 25px 15px;
+  }
 }

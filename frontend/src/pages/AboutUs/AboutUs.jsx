@@ -20,46 +20,43 @@ const AboutUs = () => {
             <div className={styles.container}>
                 <div className={styles.ourStory}>
                     <div className={styles.ourStoryText}>
-                        <h2>Наша история</h2>
+                        <h2>Our Story</h2>
                         <p>
-                            Запущенная в 2025 году, компания Shopify является ведущей онлайн-платформой для покупок
-                            в Кыргызстане.
-                            Поддерживаемая широким спектром адаптированных маркетинговых,
-                            аналитических и сервисных решений, Shopify сотрудничает с 10 500 продавцами и
-                            300 брендами и обслуживает 2 миллиона клиентов по всей стране.
+                            Founded in 2025, Shopify is the leading online shopping platform in Kyrgyzstan.
+                            Supported by a wide range of tailored marketing, analytics, and service solutions,
+                            Shopify collaborates with 10,500 sellers and 300 brands, serving 2 million customers nationwide.
                         </p>
                         <p>
-                            Shopify предлагает более 1 миллиона товаров, и их число быстро растёт.
-                            Компания предлагает разнообразный ассортимент в категориях,
-                            охватывающих товары для потребителей.
+                            Shopify offers over 1 million products, and the number is growing rapidly.
+                            The company provides a diverse assortment of consumer goods across various categories.
                         </p>
                     </div>
-                    <img src={ourStoryImg} alt=""/>
+                    <img src={ourStoryImg} alt="Our Story"/>
                 </div>
 
                 <div className={styles.achievements}>
                     <div className={styles.achievementsBlock}>
                         <img src={aboutUsStore} alt=""/>
                         <span>10.5k</span>
-                        <span>Продавцы, активные на нашем сайте</span>
+                        <span>Active sellers on our platform</span>
                     </div>
                     <div className={styles.achievementsBlock}>
                         <img src={aboutUsCustomer} alt=""/>
                         <span>45.5k</span>
-                        <span>Клиенты, активные на нашем сайте</span>
+                        <span>Active customers on our platform</span>
                     </div>
                     <div className={styles.achievementsBlock}>
                         <img src={aboutUsMoney} alt=""/>
                         <span>25k</span>
-                        <span>Годовой валовой объём продаж на нашем сайте</span>
+                        <span>Annual gross sales on our platform</span>
                     </div>
                 </div>
 
                 <div className={styles.people}>
                     <div className={styles.peopleBox}>
                         <img src={tomCruise} alt=""/>
-                        <h4>Эльдар Тайыпов</h4>
-                        <span>Основатель и председатель</span>
+                        <h4>Eldar Taiypov</h4>
+                        <span>Founder & Chairman</span>
                         <div className={styles.peopleSocials}>
                             <img src={facebook} alt=""/>
                             <img src={twitterIcon} alt=""/>
@@ -68,8 +65,8 @@ const AboutUs = () => {
                     </div>
                     <div className={styles.peopleBox}>
                         <img src={emmaWatson} alt=""/>
-                        <h4>Емма Вотсон</h4>
-                        <span>Исполнительный директор</span>
+                        <h4>Emma Watson</h4>
+                        <span>Chief Executive Officer</span>
                         <div className={styles.peopleSocials}>
                             <img src={facebook} alt=""/>
                             <img src={twitterIcon} alt=""/>
@@ -78,8 +75,8 @@ const AboutUs = () => {
                     </div>
                     <div className={styles.peopleBox}>
                         <img src={willSmith} alt=""/>
-                        <h4>Нурислам Салибаев</h4>
-                        <span>Продуктовый дизайнер</span>
+                        <h4>Nurislom Salibaev</h4>
+                        <span>Product Designer</span>
                         <div className={styles.peopleSocials}>
                             <img src={facebook} alt=""/>
                             <img src={twitterIcon} alt=""/>
@@ -87,26 +84,27 @@ const AboutUs = () => {
                         </div>
                     </div>
                 </div>
+
                 <div className={styles.features}>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
                             <img src={bus} alt=""/>
-                            <h4>Бесплатная и быстрая доставка</h4>
-                            <span>Бесплатная доставка для всех заказов свыше 2000сом</span>
+                            <h4>Free & Fast Shipping</h4>
+                            <span>Free shipping on all orders over 2000 KGS</span>
                         </div>
                     </div>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
                             <img src={headphones} alt=""/>
-                            <h4>24/7 Обслуживание клиентов</h4>
-                            <span>Дружелюбная поддержка клиентов 24/7</span>
+                            <h4>24/7 Customer Support</h4>
+                            <span>Friendly support available 24/7</span>
                         </div>
                     </div>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
                             <img src={guard} alt=""/>
-                            <h4>Возврат денег гарантирован</h4>
-                            <span>Мы возвращаем деньги в течении 30 дней</span>
+                            <h4>Money-Back Guarantee</h4>
+                            <span>We refund money within 30 days</span>
                         </div>
                     </div>
                 </div>

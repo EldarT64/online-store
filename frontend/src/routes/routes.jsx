@@ -7,6 +7,8 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute.jsx";
 import AboutUs from "../pages/AboutUs/AboutUs.jsx";
 import Contacts from "../pages/Contacts/Contacts.jsx";
 import NotFound from "../pages/NotFound/NotFound.jsx";
+import CreateProduct from "../pages/CreateProduct/CreateProduct.jsx";
+import EditProduct from "../pages/EditProduct/EditProduct.jsx";
 
 const routes = [
     {
@@ -18,6 +20,14 @@ const routes = [
             {
                 path: PATHS.MAIN_PAGE,
                 element: <MainPage/>,
+            },
+            {
+                path: PATHS.CREATE_PRODUCT_PAGE,
+                element: <CreateProduct/>,
+            },
+            {
+                path: PATHS.EDIT_PRODUCT_PAGE,
+                element: <EditProduct/>,
             },
         ],
     },

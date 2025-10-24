@@ -39,7 +39,7 @@ const Header = () => {
                                     onClick={closeMenu}
                                     className={({isActive}) => isActive ? styles.activeLink : styles.link}
                                 >
-                                    Главная
+                                    Main Page
                                 </NavLink>
 
                                 <NavLink
@@ -47,7 +47,7 @@ const Header = () => {
                                     onClick={closeMenu}
                                     className={({isActive}) => isActive ? styles.activeLink : styles.link}
                                 >
-                                    Контакты
+                                    Contacts
                                 </NavLink>
 
                                 <NavLink
@@ -55,7 +55,7 @@ const Header = () => {
                                     onClick={closeMenu}
                                     className={({isActive}) => isActive ? styles.activeLink : styles.link}
                                 >
-                                    О нас
+                                    About Us
                                 </NavLink>
 
                                 {user ? null : (
@@ -64,9 +64,26 @@ const Header = () => {
                                         onClick={closeMenu}
                                         className={({isActive}) => isActive ? styles.activeLink : styles.link}
                                     >
-                                        Регистрация
+                                        Registration
                                     </NavLink>
                                 )}
+
+                                {/*{user && user.role === 'admin' ? (*/}
+                                {/*    <NavLink*/}
+                                {/*        to="/create-product"*/}
+                                {/*        onClick={closeMenu}*/}
+                                {/*        className={({isActive}) => isActive ? styles.activeLink : styles.link}*/}
+                                {/*    >*/}
+                                {/*        Create Product*/}
+                                {/*    </NavLink>*/}
+                                {/*) : null}*/}
+                                <NavLink
+                                    to="/create-product"
+                                    onClick={closeMenu}
+                                    className={({isActive}) => isActive ? styles.activeLink : styles.link}
+                                >
+                                    Create Product
+                                </NavLink>
                             </li>
                         </ul>
                     </div>

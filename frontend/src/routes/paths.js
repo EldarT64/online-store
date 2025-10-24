@@ -4,4 +4,6 @@ export const PATHS = {
     CONTACT_US_PAGE: '/contacts',
     REGISTER_PAGE: '/register',
     LOGIN_PAGE: '/login',
+    CREATE_PRODUCT_PAGE: '/create-product',
+    EDIT_PRODUCT_PAGE: '/edit-product/:id',
 };

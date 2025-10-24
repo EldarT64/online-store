@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import {registerUser, loginUser, getMe} from '../api/users.js';
 
 const useUserStore = create((set) => ({
-    isGetMeLoading: false,
+    isGetMeLoading: true,
     user: null,
     token: localStorage.getItem('token') || null,
     loading: false,
@@ -67,7 +67,6 @@ const useUserStore = create((set) => ({
             set({ user, isGetMeLoading: false });
         } catch (err){
             console.error('loadUser error:', err?.response?.data || err.message);
-            // localStorage.removeItem('token'); ❌ отключи
             set({ user: null, isGetMeLoading: false });
         }
     }
