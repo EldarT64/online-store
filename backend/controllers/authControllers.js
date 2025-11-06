@@ -68,11 +68,18 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
     try {
         if (!req.user) {
-            return res.status(404).json({message: 'Пользователь не найден'});
+            return res.status(404).json({ message: 'Пользователь не найден' });
         }
 
-        res.json(req.user);
+        res.status(200).json({
+            user: {
+                id: req.user._id,
+                name: req.user.name,
+                email: req.user.email,
+                role: req.user.role
+            },
+        });
     } catch (error) {
-        res.status(500).json({message: 'Ошибка сервера'});
+        res.status(500).json({ message: 'Ошибка сервера' });
     }
 };

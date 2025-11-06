@@ -1,36 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import styles from './Wishlist.module.scss';
-import { Card, CardContent, CardMedia, Typography, IconButton, Button } from '@mui/material';
-import { Delete } from '@mui/icons-material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import config from '../../api/config.js';
-import { getWishlistByUser, removeFromWishlist } from '../../api/wishlist.js';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from "react";
+import styles from "./Wishlist.module.scss";
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    IconButton,
+    Snackbar,
+    Alert
+} from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import config from "../../api/config.js";
+import { getWishlistByUser, removeFromWishlist } from "../../api/wishlist.js";
+import { addToCart, getCart } from "../../api/cart.js";
+import { useNavigate } from "react-router";
 import useUserStore from "../../store/auth.js";
 
 const Wishlist = () => {
     const [wishlistProducts, setWishlistProducts] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
+    const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
     const navigate = useNavigate();
     const { user } = useUserStore();
 
+    // Загружаем вишлист и корзину при загрузке
     useEffect(() => {
-        const fetchWishlist = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getWishlistByUser(user._id);
-                setWishlistProducts(data);
+                const [wishlistData, cartData] = await Promise.all([
+                    getWishlistByUser(user.id),
+                    getCart()
+                ]);
+
+                setWishlistProducts(wishlistData);
+                setCartItems(cartData.items || []);
             } catch (error) {
-                console.error("Ошибка при загрузке вишлиста:", error);
+                console.error("Ошибка при загрузке данных:", error);
             }
         };
-        fetchWishlist();
+        fetchData();
     }, [user]);
 
     const handleRemove = async (productId) => {
         try {
-            await removeFromWishlist(user._id, productId);
-            setWishlistProducts(prev => prev.filter(p => p._id !== productId));
+            await removeFromWishlist(user.id, productId);
+            setWishlistProducts((prev) => prev.filter((p) => p._id !== productId));
         } catch (error) {
             console.error("Ошибка при удалении из вишлиста:", error);
+        }
+    };
+
+    // Добавление в корзину
+    const handleAddToCart = async (productId) => {
+        try {
+            const alreadyInCart = cartItems.some(
+                (item) => item.productId._id === productId || item.productId === productId
+            );
+
+            if (alreadyInCart) {
+                setSnackbar({
+                    open: true,
+                    message: "This product is already in your cart!",
+                    severity: "warning"
+                });
+                return;
+            }
+
+            const updatedCart = await addToCart(productId, 1);
+            setCartItems(updatedCart.items);
+            setSnackbar({
+                open: true,
+                message: "Product added to cart!",
+                severity: "success"
+            });
+        } catch (error) {
+            console.error("Ошибка при добавлении в корзину:", error);
+            setSnackbar({
+                open: true,
+                message: "Failed to add product to cart.",
+                severity: "error"
+            });
         }
     };
 
@@ -41,16 +91,21 @@ const Wishlist = () => {
                 <div className={styles.productsGrid}>
                     {wishlistProducts.map((product) => (
                         <Card key={product._id} className={styles.productCard}>
-                            {/* Верхняя панель с кнопками */}
                             <div className={styles.iconGroup}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<ShoppingCartIcon />}
-                                    className={styles.addToCartButton}
+                                <IconButton
+                                    onClick={() => handleAddToCart(product._id)}
                                 >
-                                    Add to cart
-                                </Button>
+                                    <ShoppingCartOutlinedIcon
+                                        style={{
+                                            color: cartItems.some(
+                                                (item) => item.productId?._id === product._id || item.productId === product._id
+                                            )
+                                                ? "#ff4d4f" // красный, если уже в корзине
+                                                : "inherit"
+                                        }}
+                                    />
+                                </IconButton>
+
                                 <IconButton
                                     className={styles.deleteButton}
                                     onClick={() => handleRemove(product._id)}
@@ -59,7 +114,6 @@ const Wishlist = () => {
                                 </IconButton>
                             </div>
 
-                            {/* Изображение продукта */}
                             <div className={styles.cardImageWrapper}>
                                 <CardMedia
                                     component="img"
@@ -70,9 +124,8 @@ const Wishlist = () => {
                                 />
                             </div>
 
-                            {/* Информация о продукте */}
                             <CardContent className={styles.cardContent}>
-                                <Typography variant="subtitle1" component="div" className={styles.productName}>
+                                <Typography variant="subtitle1" className={styles.productName}>
                                     {product.name}
                                 </Typography>
                                 <Typography variant="h6" color="error" className={styles.productPrice}>
@@ -85,6 +138,23 @@ const Wishlist = () => {
             ) : (
                 <p className={styles.emptyMessage}>Your wishlist is empty.</p>
             )}
+
+            {/* Snackbar уведомление */}
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+                <Alert
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    severity={snackbar.severity}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

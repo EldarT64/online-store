@@ -1,0 +1,212 @@
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr; /* добавили колонку для кнопки */
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+
+  & div:first-child {
+    text-align: left;
+  }
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr; /* колонка для кнопки в конце */
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.tableRow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.productImage {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.productName {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.productDesc {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.price,
+.quantity,
+.subtotal {
+  font-size: 15px;
+  color: #333;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.qtyValue {
+  min-width: 28px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.totalSection {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 16px 0;
+  gap: 10px;
+  border-top: 2px solid #f0f0f0;
+  margin-top: 20px;
+}
+
+.status {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+  color: #777;
+}
+
+.checkout {
+  background: #db4444;
+  color: #fff;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-left: 30px;
+
+  &:hover {
+    background: #b93232;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #ffffff;
+  gap: 10px;
+
+  & button {
+    flex: 1;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 12px 16px;
+    background-color: #ffffff;
+    color: #000;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+      transform: translateY(-2px);
+    }
+
+    & a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
+/* Адаптивка под мобильные устройства */
+@media (max-width: 600px) {
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 2.5fr 1fr 1fr 1fr 0.7fr; /* подстраиваем кнопку */
+    padding: 8px 12px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    padding: 15px;
+
+    & button {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+
+  .productImage {
+    width: 65px;
+    height: 65px;
+  }
+
+  .productName {
+    font-size: 14px;
+  }
+
+  .productDesc {
+    font-size: 12px;
+  }
+
+  .price,
+  .quantity,
+  .subtotal {
+    font-size: 14px;
+  }
+
+  .qtyValue {
+    min-width: 24px;
+    font-size: 14px;
+  }
+}

@@ -10,6 +10,7 @@ import NotFound from "../pages/NotFound/NotFound.jsx";
 import CreateProduct from "../pages/CreateProduct/CreateProduct.jsx";
 import EditProduct from "../pages/EditProduct/EditProduct.jsx";
 import Wishlist from "../pages/Wishlist/Wishlist.jsx";
+import Cart from "../pages/Cart/Cart.jsx";
 
 const routes = [
     {
@@ -33,6 +34,10 @@ const routes = [
             {
                 path: PATHS.WISHLIST_PAGE,
                 element: <Wishlist/>,
+            },
+            {
+                path: PATHS.CART_PAGE,
+                element: <Cart/>,
             },
         ],
     },

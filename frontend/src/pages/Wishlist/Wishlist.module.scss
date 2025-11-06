@@ -50,7 +50,7 @@
 
   .iconGroup {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px 15px;
     align-items: center;
 
@@ -62,7 +62,6 @@
 
     .deleteButton {
       margin-left: 10px;
-      color: #DB4444;
     }
   }
 

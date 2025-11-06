@@ -9,6 +9,7 @@ import categoriesRoutes from "./routes/categoriesRoutes.js";
 import productsRoutes from "./routes/productsRoutes.js";
 import config from "./config.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/cart', cartRoutes);
 
 mongoose.connect(config.mongoURI)
     .then(() => console.log('MongoDB connected'))

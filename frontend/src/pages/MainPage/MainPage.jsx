@@ -21,9 +21,13 @@ import { getAllProducts, getProductsByCategory, deleteProductById } from "../../
 import { useNavigate } from "react-router";
 import bus from "../../assets/bus.svg";
 import guard from "../../assets/guard.svg";
-import { Card, CardContent, CardMedia, Typography, IconButton } from '@mui/material';
+import {Card, CardContent, CardMedia, Typography, IconButton, Alert} from '@mui/material';
 import {addToWishlist, getWishlistByUser, removeFromWishlist} from '../../api/wishlist.js';
 import useUserStore from "../../store/auth.js";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import {addToCart, getCart} from "../../api/cart.js";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const MainPage = () => {
     const [categories, setCategories] = useState([]);
@@ -33,6 +37,8 @@ const MainPage = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [wishlist, setWishlist] = useState([]);
     const navigate = useNavigate();
+    const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+    const [cart, setCart] = useState([]);
     const {user} = useUserStore();
 
     const categoryImages = {
@@ -57,6 +63,20 @@ const MainPage = () => {
     }, []);
 
     useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const data = await getCart();
+                setCart(data.items.map(item => item.productId._id));
+            } catch (error) {
+                console.error("Error loading cart:", error);
+            }
+        };
+
+        fetchCart();
+    }, []);
+
+
+    useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const data = await getAllProducts();
@@ -71,14 +91,14 @@ const MainPage = () => {
     useEffect(() => {
         const fetchWishlist = async () => {
             try {
-                const data = await getWishlistByUser(user._id); // делаем запрос к серверу
+                const data = await getWishlistByUser(user.id); // делаем запрос к серверу
                 const productIds = data.map(p => p._id); // вытаскиваем id товаров
                 setWishlist(productIds); // сохраняем в стейт
             } catch (error) {
                 console.error("Ошибка при загрузке вишлиста:", error);
             }
         };
-        if (user?._id) fetchWishlist(); // проверка, что user есть
+        if (user?.id) fetchWishlist(); // проверка, что user есть
     }, [user]);
 
     const handleCategoryClick = async (categoryId) => {
@@ -97,11 +117,11 @@ const MainPage = () => {
         try {
             if (wishlist.includes(productId)) {
                 // Удаляем из вишлиста
-                await removeFromWishlist(user._id, productId);
+                await removeFromWishlist(user.id, productId);
                 setWishlist(prev => prev.filter(id => id !== productId));
             } else {
                 // Добавляем в вишлист
-                await addToWishlist(user._id, productId);
+                await addToWishlist(user.id, productId);
                 setWishlist(prev => [...prev, productId]);
             }
         } catch (error) {
@@ -130,6 +150,36 @@ const MainPage = () => {
             handleCloseDialog();
         }
     };
+
+    const handleAddToCart = async (productId) => {
+        try {
+            if (cart.includes(productId)) {
+                setSnackbar({
+                    open: true,
+                    message: "Product is already in your cart",
+                    severity: "warning",
+                });
+                return;
+            }
+
+            await addToCart(productId);
+            setCart(prev => [...prev, productId]); // обновляем стейт cart
+            setSnackbar({
+                open: true,
+                message: "Product added to cart",
+                severity: "success",
+            });
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            setSnackbar({
+                open: true,
+                message: "Server Error",
+                severity: "error",
+            });
+        }
+    };
+
+
 
     return (
         <div className={styles.mainPage}>
@@ -178,7 +228,6 @@ const MainPage = () => {
                                 const isLiked = wishlist.includes(product._id);
                                 return (
                                     <Card key={product._id} className={styles.productCard}>
-                                        {/* Иконки вынесены над картинкой */}
                                         <div className={styles.iconGroup}>
                                             <IconButton
                                                 className={styles.wishlistButton}
@@ -192,6 +241,16 @@ const MainPage = () => {
                                                         filter: isLiked
                                                             ? 'invert(27%) sepia(97%) saturate(7471%) hue-rotate(352deg) brightness(89%) contrast(119%)'
                                                             : 'invert(0%)',
+                                                    }}
+                                                />
+                                            </IconButton>
+                                            <IconButton
+                                                className={styles.cartButton}
+                                                onClick={() => handleAddToCart(product._id)}
+                                            >
+                                                <ShoppingCartOutlinedIcon
+                                                    style={{
+                                                        color: cart.includes(product._id) ? "#ff4d4f" : "inherit",
                                                     }}
                                                 />
                                             </IconButton>
@@ -269,6 +328,24 @@ const MainPage = () => {
                     <Button color="error" onClick={handleDeleteProduct}>Delete</Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+                <Alert
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    severity={snackbar.severity}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+
+
         </div>
     );
 };

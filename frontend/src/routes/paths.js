@@ -7,4 +7,5 @@ export const PATHS = {
     CREATE_PRODUCT_PAGE: '/create-product',
     EDIT_PRODUCT_PAGE: '/edit-product/:id',
     WISHLIST_PAGE: '/wishlist',
+    CART_PAGE: '/cart',
 };

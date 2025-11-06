@@ -6,7 +6,7 @@ const NotFound = () => {
     const navigate = useNavigate();
 
     const goToProducts = () => {
-        navigate('/products');
+        navigate('/');
     };
 
     return (

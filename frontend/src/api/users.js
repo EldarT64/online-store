@@ -14,6 +14,6 @@ export const loginUser = async (userData) => {
 };
 
 export const getMe = async () => {
-    const { data } = await axiosInstance.get('/auth/me');
-    return data;
+    const response = await axiosInstance.get('/auth/me');
+    return response.data.user;
 };
