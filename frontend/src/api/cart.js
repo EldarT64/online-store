@@ -24,3 +24,8 @@ export const updateCart = async (items) => {
     const response = await axiosInstance.put("/cart/update", { items });
     return response.data;
 };
+
+export const getProductById = async (id) => {
+    const res = await axiosInstance.get(`/cart/product/${id}`);
+    return res.data;
+};

@@ -9,4 +9,5 @@ export const PATHS = {
     WISHLIST_PAGE: '/wishlist',
     CART_PAGE: '/cart',
     PROFILE_PAGE: '/profile',
+    DETAILED_VIEW_PAGE: '/detailed-view/:id',
 };

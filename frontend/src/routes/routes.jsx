@@ -12,6 +12,7 @@ import EditProduct from "../pages/EditProduct/EditProduct.jsx";
 import Wishlist from "../pages/Wishlist/Wishlist.jsx";
 import Cart from "../pages/Cart/Cart.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
+import DetailedView from "../pages/DetailedView/DetailedView.jsx";
 
 const routes = [
     {
@@ -43,6 +44,10 @@ const routes = [
             {
                 path: PATHS.PROFILE_PAGE,
                 element: <Profile/>,
+            },
+            {
+                path: PATHS.DETAILED_VIEW_PAGE,
+                element: <DetailedView/>,
             }
         ],
     },

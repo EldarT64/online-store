@@ -101,7 +101,6 @@ const Cart = () => {
                                  className={styles.productImage}/>
                             <div>
                                 <div className={styles.productName}>{product.name}</div>
-                                <div className={styles.productDesc}>{product.description}</div>
                             </div>
                         </div>
 

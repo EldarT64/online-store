@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './MainPage.module.scss';
 import phones from '../../assets/main_page_phone.svg';
 import computers from '../../assets/main_page_computer.svg';
@@ -9,22 +9,23 @@ import game from '../../assets/main_page_game.svg';
 import wishList from '../../assets/wishlist.svg';
 import Divider from '@mui/material/Divider';
 import config from '../../api/config.js';
-import { Delete } from '@mui/icons-material';
+import {Delete} from '@mui/icons-material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { getAllCategories } from '../../api/categories.js';
-import { getAllProducts, getProductsByCategory, deleteProductById } from "../../api/products.js";
-import { useNavigate } from "react-router";
+import {getAllCategories} from '../../api/categories.js';
+import {getAllProducts, getProductsByCategory, deleteProductById} from "../../api/products.js";
+import {useNavigate} from "react-router";
 import bus from "../../assets/bus.svg";
 import guard from "../../assets/guard.svg";
 import {Card, CardContent, CardMedia, Typography, IconButton, Alert} from '@mui/material';
 import {addToWishlist, getWishlistByUser, removeFromWishlist} from '../../api/wishlist.js';
 import useUserStore from "../../store/auth.js";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import EditingCartOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {addToCart, getCart} from "../../api/cart.js";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -37,7 +38,7 @@ const MainPage = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [wishlist, setWishlist] = useState([]);
     const navigate = useNavigate();
-    const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+    const [snackbar, setSnackbar] = useState({open: false, message: "", severity: "success"});
     const [cart, setCart] = useState([]);
     const {user} = useUserStore();
 
@@ -180,7 +181,6 @@ const MainPage = () => {
     };
 
 
-
     return (
         <div className={styles.mainPage}>
             <div className={styles.container}>
@@ -213,7 +213,7 @@ const MainPage = () => {
                     </div>
                 </div>
 
-                <Divider sx={{ mb: '50px' }} />
+                <Divider sx={{mb: '50px'}}/>
 
                 <div className={styles.products}>
                     <div className={styles.redBrickWrapper}>
@@ -259,7 +259,13 @@ const MainPage = () => {
                                                 className={styles.deleteButton}
                                                 onClick={() => handleOpenDialog(product._id)}
                                             >
-                                                <Delete />
+                                                <Delete/>
+                                            </IconButton>
+
+                                            <IconButton>
+                                                <EditingCartOutlinedIcon
+                                                    onClick={() => navigate(`/edit-product/${product._id}`)}
+                                                />
                                             </IconButton>
                                         </div>
 
@@ -268,13 +274,14 @@ const MainPage = () => {
                                                 component="img"
                                                 image={config.IMAGE_BASE_URL + product.image}
                                                 alt={product.name}
-                                                onClick={() => navigate(`/edit-product/${product._id}`)}
+                                                onClick={() => navigate(`/detailed-view/${product._id}`)}
                                                 className={styles.cardImage}
                                             />
                                         </div>
 
                                         <CardContent className={styles.cardContent}>
-                                            <Typography variant="subtitle1" component="div" className={styles.productName}>
+                                            <Typography variant="subtitle1" component="div"
+                                                        className={styles.productName}>
                                                 {product.name}
                                             </Typography>
                                             <Typography variant="h6" color="error" className={styles.productPrice}>
@@ -294,21 +301,21 @@ const MainPage = () => {
                 <div className={styles.features}>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
-                            <img src={bus} alt="" />
+                            <img src={bus} alt=""/>
                             <h4>Free & Fast Shipping</h4>
                             <span>Free shipping on all orders over 2000 KGS</span>
                         </div>
                     </div>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
-                            <img src={headphones} alt="" />
+                            <img src={headphones} alt=""/>
                             <h4>24/7 Customer Support</h4>
                             <span>Friendly support available 24/7</span>
                         </div>
                     </div>
                     <div className={styles.featureBox}>
                         <div className={styles.featureContent}>
-                            <img src={guard} alt="" />
+                            <img src={guard} alt=""/>
                             <h4>Money-Back Guarantee</h4>
                             <span>We refund money within 30 days</span>
                         </div>
@@ -332,14 +339,14 @@ const MainPage = () => {
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={3000}
-                onClose={() => setSnackbar({ ...snackbar, open: false })}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                onClose={() => setSnackbar({...snackbar, open: false})}
+                anchorOrigin={{vertical: "top", horizontal: "right"}}
             >
                 <Alert
-                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    onClose={() => setSnackbar({...snackbar, open: false})}
                     severity={snackbar.severity}
                     variant="filled"
-                    sx={{ width: "100%" }}
+                    sx={{width: "100%"}}
                 >
                     {snackbar.message}
                 </Alert>
