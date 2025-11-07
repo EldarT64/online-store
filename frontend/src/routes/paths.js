@@ -10,4 +10,5 @@ export const PATHS = {
     CART_PAGE: '/cart',
     PROFILE_PAGE: '/profile',
     DETAILED_VIEW_PAGE: '/detailed-view/:id',
+    CHECKOUT_PAGE: '/checkout',
 };

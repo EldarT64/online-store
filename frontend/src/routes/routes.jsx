@@ -13,6 +13,7 @@ import Wishlist from "../pages/Wishlist/Wishlist.jsx";
 import Cart from "../pages/Cart/Cart.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
 import DetailedView from "../pages/DetailedView/DetailedView.jsx";
+import Checkout from "../pages/Checkout/Checkout.jsx";
 
 const routes = [
     {
@@ -48,6 +49,10 @@ const routes = [
             {
                 path: PATHS.DETAILED_VIEW_PAGE,
                 element: <DetailedView/>,
+            },
+            {
+                path: PATHS.CHECKOUT_PAGE,
+                element: <Checkout/>,
             }
         ],
     },

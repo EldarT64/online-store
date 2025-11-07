@@ -6,9 +6,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import config from "../../api/config.js";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 
 const Cart = () => {
+    const navigate = useNavigate();
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
     const [snackbar, setSnackbar] = useState({open: false, message: "", severity: "success"});
@@ -118,7 +119,6 @@ const Cart = () => {
 
                         <div className={styles.subtotal}>{subtotal.toFixed(2)} $</div>
 
-                        {/* Кнопка удаления в конце */}
                         <div className={styles.action}>
                             <IconButton
                                 color="error"
@@ -141,7 +141,7 @@ const Cart = () => {
             <div className={styles.totalSection}>
                 <span>Total:</span>
                 <span>{cart.items.reduce((sum, item) => sum + item.productId.price * item.quantity, 0).toFixed(2)} $</span>
-                <button className={styles.checkout}>
+                <button className={styles.checkout} onClick={() => navigate('/checkout')}>
                     Go to checkout
                 </button>
             </div>
