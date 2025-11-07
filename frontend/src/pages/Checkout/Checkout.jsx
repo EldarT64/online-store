@@ -48,8 +48,6 @@ const Checkout = () => {
             message: 'Your order has been successfully placed!',
             severity: 'success'
         });
-
-        // Здесь можно добавить реальный API вызов
     };
 
     const handleCloseSnackbar = () => {

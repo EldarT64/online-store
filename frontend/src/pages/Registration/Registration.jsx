@@ -25,16 +25,16 @@ const Registration = () => {
         const success = await register({ name, email, password });
 
         if (success) {
-            navigate('/products');
+            navigate('/');
         }
     };
 
-    const nameError = !name && error ? 'Имя обязательно' : '';
+    const nameError = !name && error ? 'Name is required' : '';
     const emailError = error?.toLowerCase().includes('пользователь') || error?.toLowerCase().includes('email') ? error : '';
-    const passwordError = password.length < 6 && error ? 'Пароль должен быть не менее 6 символов' : '';
+    const passwordError = password.length < 6 && error ? 'Password must be at least 6 characters' : '';
 
     const token = localStorage.getItem('token');
-    if (token) return <Navigate to="/products" replace />;
+    if (token) return <Navigate to="/" replace />;
 
     return (
         <div className={styles.registerPage}>
@@ -43,12 +43,12 @@ const Registration = () => {
                     <img src={registration} alt="..." />
                     <div className={styles.right}>
                         <div className={styles.titlesWrapper}>
-                            <h2>Создать аккаунт</h2>
-                            <span className={styles.details}>Введите ваши данные</span>
+                            <h2>Create Account</h2>
+                            <span className={styles.details}>Enter your details</span>
                         </div>
                         <form className={styles.fieldsContainer} onSubmit={handleSubmit}>
                             <TextField
-                                label="Имя"
+                                label="Name"
                                 variant="standard"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -56,7 +56,7 @@ const Registration = () => {
                                 helperText={nameError}
                             />
                             <TextField
-                                label="Почта"
+                                label="Email"
                                 variant="standard"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -64,7 +64,7 @@ const Registration = () => {
                                 helperText={emailError}
                             />
                             <TextField
-                                label="Пароль"
+                                label="Password"
                                 variant="standard"
                                 type={"password"}
                                 value={password}
@@ -79,7 +79,7 @@ const Registration = () => {
                                 type="submit"
                                 disabled={loading}
                             >
-                                {loading ? 'Создание...' : 'Создать аккаунт'}
+                                {loading ? 'Creating...' : 'Create Account'}
                             </Button>
 
                             {error && (
@@ -89,8 +89,8 @@ const Registration = () => {
                             )}
                         </form>
                         <div className={styles.alreadyHaveAccount}>
-                            <span>Уже есть аккаунт ? </span>
-                            <Link to="/login" style={{textDecoration: "underline"}}>Войти</Link>
+                            <span>Already have an account? </span>
+                            <Link to="/login" style={{textDecoration: "underline"}}>Login</Link>
                         </div>
                     </div>
                 </div>

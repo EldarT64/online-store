@@ -12,7 +12,7 @@ export const register = async (req, res) => {
 
     try {
         const existingUser = await User.findOne({email});
-        if (existingUser) return res.status(400).json({message: 'Пользователь уже существует'});
+        if (existingUser) return res.status(400).json({message: 'User already exists'});
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -44,10 +44,10 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({email});
-        if (!user) return res.status(400).json({message: 'Неверные данные'});
+        if (!user) return res.status(400).json({message: 'Incorrect email or password'});
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({message: 'Неверные данные'});
+        if (!isMatch) return res.status(400).json({message: 'Incorrect email or password'});
 
         const token = generateToken(user._id);
 
@@ -68,7 +68,7 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
     try {
         if (!req.user) {
-            return res.status(404).json({ message: 'Пользователь не найден' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         res.status(200).json({

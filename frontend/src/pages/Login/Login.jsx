@@ -23,7 +23,7 @@ const Login = () => {
     };
 
     const emailError = error?.toLowerCase().includes('пользователь') || error?.toLowerCase().includes('email') ? error : '';
-    const passwordError = password.length < 6 && error ? 'Пароль должен быть не менее 6 символов' : '';
+    const passwordError = password.length < 6 && error ? 'Password must be at least 6 characters long' : '';
 
     const token = localStorage.getItem('token');
     if (token) return <Navigate to="/" replace/>;
@@ -35,26 +35,22 @@ const Login = () => {
                     <img src={registration} alt="..."/>
                     <div className={styles.right}>
                         <div className={styles.titlesWrapper}>
-                            <h2>Войти</h2>
-                            <span className={styles.details}>Введите ваши данные</span>
+                            <h2>Sign in</h2>
+                            <span className={styles.details}>Enter your data</span>
                         </div>
                         <form className={styles.fieldsContainer} onSubmit={handleSubmit}>
                             <TextField
-                                label="Почта"
+                                label="Email"
                                 variant="standard"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                error={!!emailError}
-                                helperText={emailError}
                             />
                             <TextField
-                                label="Пароль"
+                                label="Password"
                                 variant="standard"
                                 type={"password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                error={!!passwordError}
-                                helperText={passwordError}
                             />
                             <Button
                                 variant="contained"
@@ -62,7 +58,7 @@ const Login = () => {
                                 type="submit"
                                 disabled={loading}
                             >
-                                {loading ? 'Вход...' : 'Войти'}
+                                {loading ? 'Signing in...' : 'Sign in'}
                             </Button>
 
                             {error && (
@@ -72,8 +68,8 @@ const Login = () => {
                             )}
                         </form>
                         <div className={styles.alreadyHaveAccount}>
-                            <span>Нет аккаунта ? </span>
-                            <Link to="/register" style={{textDecoration: "underline"}}>Зарегистрироваться</Link>
+                            <span>Dont have an account ? </span>
+                            <Link to="/register" style={{textDecoration: "underline"}}>Register</Link>
                         </div>
                     </div>
                 </div>

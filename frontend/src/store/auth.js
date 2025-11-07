@@ -12,11 +12,11 @@ const useUserStore = create((set) => ({
         set({ loading: true, error: null });
 
         if (!name || !email || !password) {
-            set({ error: 'Все поля обязательны', loading: false });
+            set({ error: 'All fields are required', loading: false });
             return false;
         }
         if (password.length < 6) {
-            set({ error: 'Пароль должен быть не менее 6 символов', loading: false });
+            set({ error: 'Password must be at least 6 characters', loading: false });
             return false;
         }
 
@@ -26,7 +26,7 @@ const useUserStore = create((set) => ({
             return true;
         } catch (err) {
             set({
-                error: err.response?.data?.message || 'Ошибка сервера',
+                error: err.response?.data?.message || 'Server Error',
                 loading: false
             });
             return false;
@@ -41,7 +41,7 @@ const useUserStore = create((set) => ({
             return true;
         } catch (err) {
             set({
-                error: err.response?.data?.message || 'Ошибка сервера',
+                error: err.response?.data?.message || 'Server Error',
                 loading: false
             });
             return false;

@@ -55,9 +55,10 @@ const MainPage = () => {
         const fetchCategories = async () => {
             try {
                 const data = await getAllCategories();
-                setCategories(data);
+                setCategories(Array.isArray(data) ? data : []);
             } catch (error) {
-                console.error('Ошибка при загрузке категорий:', error);
+                console.error('Error loading categories:', error);
+                setCategories([]);
             }
         };
         fetchCategories();
@@ -67,12 +68,13 @@ const MainPage = () => {
         const fetchCart = async () => {
             try {
                 const data = await getCart();
-                setCart(data.items.map(item => item.productId._id));
+                const items = Array.isArray(data.items) ? data.items : [];
+                setCart(items.map(item => item.productId?._id).filter(Boolean));
             } catch (error) {
                 console.error("Error loading cart:", error);
+                setCart([]);
             }
         };
-
         fetchCart();
     }, []);
 
@@ -81,9 +83,10 @@ const MainPage = () => {
         const fetchProducts = async () => {
             try {
                 const data = await getAllProducts();
-                setProducts(data.slice(0, 8));
+                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
             } catch (error) {
-                console.error('Ошибка при загрузке продуктов:', error);
+                console.error('Error loading products:', error);
+                setProducts([]);
             }
         };
         fetchProducts();
@@ -92,41 +95,47 @@ const MainPage = () => {
     useEffect(() => {
         const fetchWishlist = async () => {
             try {
-                const data = await getWishlistByUser(user.id); // делаем запрос к серверу
-                const productIds = data.map(p => p._id); // вытаскиваем id товаров
-                setWishlist(productIds); // сохраняем в стейт
+                if (!user?.id) return;
+                const data = await getWishlistByUser(user.id);
+                const productIds = Array.isArray(data) ? data.map(p => p._id).filter(Boolean) : [];
+                setWishlist(productIds);
             } catch (error) {
-                console.error("Ошибка при загрузке вишлиста:", error);
+                console.error("Error loading wishlist:", error);
+                setWishlist([]);
             }
         };
-        if (user?.id) fetchWishlist(); // проверка, что user есть
+        fetchWishlist();
     }, [user]);
 
     const handleCategoryClick = async (categoryId) => {
-        if (activeCategory === categoryId) {
-            setActiveCategory(null);
-            const data = await getAllProducts();
-            setProducts(data.slice(0, 8));
-        } else {
-            setActiveCategory(categoryId);
-            const data = await getProductsByCategory(categoryId);
-            setProducts(data.slice(0, 8));
+        try {
+            if (activeCategory === categoryId) {
+                setActiveCategory(null);
+                const data = await getAllProducts();
+                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+            } else {
+                setActiveCategory(categoryId);
+                const data = await getProductsByCategory(categoryId);
+                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+            }
+        } catch (error) {
+            console.error('Error fetching products by category:', error);
+            setProducts([]);
         }
     };
 
     const toggleWishlist = async (productId) => {
         try {
+            if (!user?.id) return;
             if (wishlist.includes(productId)) {
-                // Удаляем из вишлиста
                 await removeFromWishlist(user.id, productId);
                 setWishlist(prev => prev.filter(id => id !== productId));
             } else {
-                // Добавляем в вишлист
                 await addToWishlist(user.id, productId);
                 setWishlist(prev => [...prev, productId]);
             }
         } catch (error) {
-            console.error("Ошибка при обновлении вишлиста:", error);
+            console.error("Error updating wishlist:", error);
         }
     };
 
@@ -143,10 +152,11 @@ const MainPage = () => {
 
     const handleDeleteProduct = async () => {
         try {
+            if (!selectedProductId) return;
             await deleteProductById(selectedProductId);
-            setProducts(products.filter(p => p._id !== selectedProductId));
+            setProducts(prev => prev.filter(p => p._id !== selectedProductId));
         } catch (error) {
-            console.error('Ошибка при удалении продукта:', error);
+            console.error('Error deleting product:', error);
         } finally {
             handleCloseDialog();
         }
