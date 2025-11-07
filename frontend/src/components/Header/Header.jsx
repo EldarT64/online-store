@@ -3,6 +3,7 @@ import styles from './Header.module.scss';
 import {Link, NavLink} from "react-router";
 import wishList from '../../assets/wishlist.svg';
 import cart from '../../assets/cartIcon.svg';
+import profile from '../../assets/profile.svg';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import useUserStore from "../../store/auth.js";
@@ -101,6 +102,9 @@ const Header = () => {
                                     </Link>
                                     <Link to="/cart" onClick={closeMenu}>
                                         <img src={cart} alt="cart"/>
+                                    </Link>
+                                    <Link to="/profile" onClick={closeMenu}>
+                                        <img src={profile} alt="profile"/>
                                     </Link>
                                 </li>
                             </ul>

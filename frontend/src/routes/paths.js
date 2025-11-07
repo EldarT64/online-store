@@ -8,4 +8,5 @@ export const PATHS = {
     EDIT_PRODUCT_PAGE: '/edit-product/:id',
     WISHLIST_PAGE: '/wishlist',
     CART_PAGE: '/cart',
+    PROFILE_PAGE: '/profile',
 };

@@ -11,6 +11,7 @@ import CreateProduct from "../pages/CreateProduct/CreateProduct.jsx";
 import EditProduct from "../pages/EditProduct/EditProduct.jsx";
 import Wishlist from "../pages/Wishlist/Wishlist.jsx";
 import Cart from "../pages/Cart/Cart.jsx";
+import Profile from "../pages/Profile/Profile.jsx";
 
 const routes = [
     {
@@ -39,6 +40,10 @@ const routes = [
                 path: PATHS.CART_PAGE,
                 element: <Cart/>,
             },
+            {
+                path: PATHS.PROFILE_PAGE,
+                element: <Profile/>,
+            }
         ],
     },
     {
