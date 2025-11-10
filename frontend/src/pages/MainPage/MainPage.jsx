@@ -41,6 +41,8 @@ const MainPage = () => {
     const [snackbar, setSnackbar] = useState({open: false, message: "", severity: "success"});
     const [cart, setCart] = useState([]);
     const {user} = useUserStore();
+    const [filteredProducts, setFilteredProducts] = useState([]); // для поиска
+    const [searchText, setSearchText] = useState(''); // текст поиска
 
     const categoryImages = {
         Phones: phones,
@@ -83,7 +85,7 @@ const MainPage = () => {
         const fetchProducts = async () => {
             try {
                 const data = await getAllProducts();
-                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+                setProducts(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error('Error loading products:', error);
                 setProducts([]);
@@ -107,16 +109,31 @@ const MainPage = () => {
         fetchWishlist();
     }, [user]);
 
+    useEffect(() => {
+        if (!searchText) {
+            setFilteredProducts(products);
+        } else {
+            const filtered = products.filter(product =>
+                product.name.toLowerCase().includes(searchText.toLowerCase())
+            );
+            setFilteredProducts(filtered);
+        }
+    }, [searchText, products]);
+
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
     const handleCategoryClick = async (categoryId) => {
         try {
             if (activeCategory === categoryId) {
                 setActiveCategory(null);
                 const data = await getAllProducts();
-                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+                setProducts(Array.isArray(data) ? data : []);
             } else {
                 setActiveCategory(categoryId);
                 const data = await getProductsByCategory(categoryId);
-                setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+                setProducts(Array.isArray(data) ? data : []);
             }
         } catch (error) {
             console.error('Error fetching products by category:', error);
@@ -194,6 +211,23 @@ const MainPage = () => {
     return (
         <div className={styles.mainPage}>
             <div className={styles.container}>
+                <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'center' }}>
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchText}
+                        onChange={handleSearchChange}
+                        style={{
+                            width: '100%',
+                            maxWidth: '400px',
+                            padding: '10px 15px',
+                            borderRadius: '8px',
+                            border: '1px solid #ddd',
+                            fontSize: '16px'
+                        }}
+                    />
+                </div>
+
                 <div className={styles.redBrickWrapper}>
                     <div className={styles.redBrick}></div>
                     <span>Categories</span>
@@ -233,8 +267,8 @@ const MainPage = () => {
                     <h3 className={styles.flashSalesTitle}>Explore Our Products</h3>
 
                     <div className={styles.productsGrid}>
-                        {products.length > 0 ? (
-                            products.map((product) => {
+                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map((product) => {
                                 const isLiked = wishlist.includes(product._id);
                                 return (
                                     <Card key={product._id} className={styles.productCard}>

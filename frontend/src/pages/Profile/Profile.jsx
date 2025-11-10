@@ -177,28 +177,36 @@ const Profile = () => {
                     <p>No orders yet.</p>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        {orders.map(order => (
-                            <div key={order._id} style={{ background: '#fff', padding: '15px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-                                <p><strong>Order ID:</strong> {order._id}</p>
-                                <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-                                    {order.items.map(item => (
-                                        <div key={item.productId._id} style={{ display: 'flex', alignItems: 'center', gap: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-                                            <img
-                                                src={config.IMAGE_BASE_URL + item.productId.image}
-                                                alt={item.productId.name}
-                                                style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
-                                            />
-                                            <div style={{ flex: 1 }}>
-                                                <p style={{ margin: 0, fontWeight: 500 }}>{item.productId.name}</p>
-                                                <p style={{ margin: 0, fontSize: '14px', color: '#555' }}>Quantity: {item.quantity}</p>
+                        {orders.map(order => {
+                            const total = order.items.reduce(
+                                (sum, item) => sum + item.productId.price * item.quantity,
+                                0
+                            );
+                            return (
+                                <div key={order._id} style={{ background: '#fff', padding: '15px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                                    <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                                        {order.items.map(item => (
+                                            <div key={item.productId._id} style={{ display: 'flex', alignItems: 'center', gap: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                                                <img
+                                                    src={config.IMAGE_BASE_URL + item.productId.image}
+                                                    alt={item.productId.name}
+                                                    style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                                                />
+                                                <div style={{ flex: 1 }}>
+                                                    <p style={{ margin: 0, fontWeight: 500 }}>{item.productId.name}</p>
+                                                    <p style={{ margin: 0, fontSize: '14px', color: '#555' }}>Quantity: {item.quantity}</p>
+                                                </div>
+                                                <p style={{ fontWeight: 500 }}>${(item.productId.price * item.quantity).toFixed(2)}</p>
                                             </div>
-                                            <p style={{ fontWeight: 500 }}>${(item.productId.price * item.quantity).toFixed(2)}</p>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <p style={{ textAlign: 'right', marginTop: '10px', fontWeight: 600 }}>
+                                        Total: ${total.toFixed(2)}
+                                    </p>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>
