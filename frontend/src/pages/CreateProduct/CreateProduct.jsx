@@ -1,4 +1,3 @@
-// CreateProduct.jsx
 import React, { useEffect, useState } from 'react';
 import styles from './CreateProduct.module.scss';
 import { getAllCategories } from '../../api/categories.js';
@@ -12,6 +11,7 @@ const CreateProduct = () => {
         description: '',
         category: '',
         image: null,
+        quantity: '', // добавлено поле
     });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -50,6 +50,7 @@ const CreateProduct = () => {
             formData.append('price', form.price);
             formData.append('description', form.description);
             formData.append('category', form.category);
+            formData.append('quantity', form.quantity); // добавлено
             formData.append('image', form.image);
 
             await axiosInstance.post('/products/create', formData, {
@@ -57,7 +58,14 @@ const CreateProduct = () => {
             });
 
             setSuccess(true);
-            setForm({ name: '', price: '', description: '', category: '', image: null });
+            setForm({
+                name: '',
+                price: '',
+                description: '',
+                category: '',
+                image: null,
+                quantity: '',
+            });
         } catch (err) {
             console.error(err);
             setError('Ошибка при создании продукта');
@@ -85,6 +93,15 @@ const CreateProduct = () => {
                     value={form.price}
                     onChange={handleChange}
                     required
+                />
+                <input
+                    type="number"
+                    name="quantity"
+                    placeholder="Количество на складе"
+                    value={form.quantity}
+                    onChange={handleChange}
+                    required
+                    min="0"
                 />
                 <textarea
                     name="description"
@@ -124,9 +141,11 @@ const CreateProduct = () => {
                         hidden
                     />
                 </label>
+
                 <button type="submit" disabled={loading}>
                     {loading ? 'Создание...' : 'Создать продукт'}
                 </button>
+
                 {success && <p className={styles.success}>Продукт успешно создан!</p>}
                 {error && <p className={styles.error}>{error}</p>}
             </form>

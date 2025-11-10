@@ -43,6 +43,7 @@ const DetailedView = () => {
         const fetchCart = async () => {
             try {
                 const data = await getCart();
+                console.log(data);
                 setCart(data.items.map(item => item.productId._id));
             } catch (error) {
                 console.error("Error loading cart:", error);

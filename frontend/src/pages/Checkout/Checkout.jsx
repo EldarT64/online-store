@@ -4,6 +4,7 @@ import { getCart } from '../../api/cart.js';
 import config from '../../api/config.js';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import {createOrder} from "../../api/products.js";
 
 const Checkout = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -39,16 +40,45 @@ const Checkout = () => {
         setFormData({ ...formData, payment: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Order submitted:', formData, cartItems);
 
-        setSnackbar({
-            open: true,
-            message: 'Your order has been successfully placed!',
-            severity: 'success'
-        });
+        try {
+            if (cartItems.length === 0) {
+                setSnackbar({
+                    open: true,
+                    message: 'Your cart is empty!',
+                    severity: 'warning'
+                });
+                return;
+            }
+
+            const orderData = {
+                items: cartItems.map(item => ({
+                    productId: item.productId._id,
+                    quantity: item.quantity
+                }))
+            };
+
+            const data = await createOrder(orderData);
+
+            setCartItems([]);
+
+            setSnackbar({
+                open: true,
+                message: data.message || "Order placed successfully!",
+                severity: "success"
+            });
+
+        } catch (err) {
+            setSnackbar({
+                open: true,
+                message: err.message || "Error while placing order",
+                severity: "error"
+            });
+        }
     };
+
 
     const handleCloseSnackbar = () => {
         setSnackbar(prev => ({ ...prev, open: false }));

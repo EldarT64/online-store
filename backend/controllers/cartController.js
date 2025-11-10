@@ -5,20 +5,29 @@ export const addToCart = async (req, res) => {
     try {
         const userId = req.user.id;
         const { productId, quantity } = req.body;
+        const qtyToAdd = quantity || 1;
 
         const product = await Product.findById(productId);
         if (!product) {
-            return res.status(404).json({ message: "Товар не найден" });
+            return res.status(404).json({ message: "This product was not found." });
+        }
+
+        // Check stock
+        if (qtyToAdd > product.quantity) {
+            return res.status(400).json({
+                message: `Only ${product.quantity} item(s) left in stock.`,
+            });
         }
 
         let cart = await Cart.findOne({ userId });
 
+        // Create a new cart if user doesn’t have one
         if (!cart) {
             cart = await Cart.create({
                 userId,
-                items: [{ productId, quantity: quantity || 1 }]
+                items: [{ productId, quantity: qtyToAdd }],
             });
-            return res.status(201).json(cart);
+            return res.status(201).json(await cart.populate("items.productId"));
         }
 
         const existingItem = cart.items.find(
@@ -26,21 +35,32 @@ export const addToCart = async (req, res) => {
         );
 
         if (existingItem) {
-            existingItem.quantity += quantity || 1;
+            const newQuantity = existingItem.quantity + qtyToAdd;
+
+            if (newQuantity > product.quantity) {
+                return res.status(400).json({
+                    message: `You can’t add more than ${product.quantity} item(s) for this product.`,
+                });
+            }
+
+            existingItem.quantity = newQuantity;
         } else {
-            cart.items.push({ productId, quantity: quantity || 1 });
+            cart.items.push({ productId, quantity: qtyToAdd });
         }
 
         await cart.save();
-
         const updatedCart = await cart.populate("items.productId");
 
-        res.json(updatedCart);
+        res.json({
+            message: "Item successfully added to your cart!",
+            cart: updatedCart,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Ошибка при добавлении в корзину" });
+        res.status(500).json({ message: "Something went wrong while adding the item to your cart. Please try again later." });
     }
 };
+
 
 export const getUserCart = async (req, res) => {
     try {
@@ -67,24 +87,41 @@ export const updateCart = async (req, res) => {
 
         let cart = await Cart.findOne({ userId });
         if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
+            return res.status(404).json({ message: "Cart not found." });
         }
 
-        // обновляем количество товаров
-        cart.items = cart.items.map((item) => {
-            const updated = items.find(
-                (i) => i.productId.toString() === item.productId.toString()
+        for (const updatedItem of items) {
+            const existingItem = cart.items.find(
+                (i) => i.productId.toString() === updatedItem.productId
             );
-            return updated ? { ...item.toObject(), quantity: updated.quantity } : item;
-        });
+
+            if (!existingItem) continue;
+
+            const product = await Product.findById(updatedItem.productId);
+            if (!product) {
+                return res.status(404).json({ message: "Product not found." });
+            }
+
+            // Проверяем, чтобы пользователь не добавил больше, чем доступно
+            if (updatedItem.quantity > product.quantity) {
+                return res.status(400).json({
+                    message: `Only ${product.quantity} item(s) left in stock.`,
+                });
+            }
+
+            existingItem.quantity = updatedItem.quantity;
+        }
 
         await cart.save();
 
         const updatedCart = await cart.populate("items.productId");
-        res.json(updatedCart);
+        res.json({
+            message: "Your cart has been updated successfully.",
+            cart: updatedCart,
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Error updating cart" });
+        res.status(500).json({ message: "Something went wrong while updating your cart. Please try again later." });
     }
 };
 

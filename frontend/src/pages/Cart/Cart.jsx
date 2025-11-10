@@ -29,7 +29,7 @@ const Cart = () => {
         fetchCartData();
     }, []);
 
-    const handleQuantityChange = async (itemId, delta) => {
+    const handleQuantityChange = (itemId, delta) => {
         const item = cart.items.find(i => i._id === itemId);
         if (!item) return;
 
@@ -37,16 +37,9 @@ const Cart = () => {
         if (newQuantity < 1) return;
 
         const updatedItems = cart.items.map(i =>
-            i._id === itemId ? {...i, quantity: newQuantity} : i
+            i._id === itemId ? { ...i, quantity: newQuantity } : i
         );
-        setCart({...cart, items: updatedItems});
-
-        try {
-            await updateCart(updatedItems.map(i => ({productId: i.productId._id, quantity: i.quantity})));
-        } catch (err) {
-            console.error(err);
-            setSnackbar({open: true, message: "Failed to update quantity", severity: "error"});
-        }
+        setCart({ ...cart, items: updatedItems });
     };
 
     const handleRemove = async (itemId) => {
@@ -67,14 +60,17 @@ const Cart = () => {
                 quantity: item.quantity,
             }));
 
-            const updatedCart = await updateCart(itemsToSave);
-            setCart(updatedCart);
+            const response = await updateCart(itemsToSave);
+            setCart(response.cart); // <-- берём cart из объекта ответа
             setSnackbar({ open: true, message: "Cart saved successfully!", severity: "success" });
         } catch (err) {
             console.error(err);
-            setSnackbar({ open: true, message: "Failed to save cart", severity: "error" });
+            const serverMessage =
+                err.response?.data?.message || "Failed to save cart. Please try again.";
+            setSnackbar({ open: true, message: serverMessage, severity: "error" });
         }
     };
+
 
     if (loading) return <div className={styles.status}>Loading...</div>;
     if (!cart || !cart.items || cart.items.length === 0) return <div className={styles.status}>Your cart is empty</div>;
@@ -91,9 +87,9 @@ const Cart = () => {
                 <div>Action</div>
             </div>
 
-            {cart.items.map(item => {
+            {cart?.items?.map(item => {
                 const product = item.productId;
-                const subtotal = product.price * item.quantity;
+                const subtotal = product?.price * item?.quantity;
 
                 return (
                     <div key={item._id} className={styles.tableRow}>
