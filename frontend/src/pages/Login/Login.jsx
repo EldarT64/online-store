@@ -22,8 +22,6 @@ const Login = () => {
         }
     };
 
-    const emailError = error?.toLowerCase().includes('пользователь') || error?.toLowerCase().includes('email') ? error : '';
-    const passwordError = password.length < 6 && error ? 'Password must be at least 6 characters long' : '';
 
     const token = localStorage.getItem('token');
     if (token) return <Navigate to="/" replace/>;

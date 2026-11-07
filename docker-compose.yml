@@ -1,0 +1,46 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongo:27017/online-shop
+      JWT_SECRET: ${JWT_SECRET:-change_me}
+      PORT: 8000
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  seed:
+    build: ./backend
+    command: ["node", "seed.js"]
+    environment:
+      MONGO_URI: mongodb://mongo:27017/online-shop
+    depends_on:
+      mongo:
+        condition: service_healthy
+    profiles: ["seed"]
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
+  uploads:
