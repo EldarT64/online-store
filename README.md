@@ -16,6 +16,7 @@ docker compose --profile seed run --rm seed   # один раз: заполни�
 
 | Сервис     | Описание                                                        |
 |------------|-----------------------------------------------------------------|
+| `caddy`    | только в проде: TLS (Let's Encrypt), HTTP→HTTPS, HSTS           |
 | `frontend` | nginx со сборкой Vite; проксирует `/api` и `/uploads` в backend |
 | `backend`  | Express API на порту 8000 (доступен только внутри сети compose) |
 | `mongo`    | MongoDB 7, данные в volume `mongo-data`                         |
@@ -30,6 +31,28 @@ docker compose logs -f backend   # логи
 docker compose down              # остановить
 docker compose down -v           # остановить и удалить данные
 ```
+
+## Сеть
+
+```
+интернет ──80/443──▶ caddy ──edge──▶ frontend (nginx) ──app──▶ backend ──data──▶ mongo
+                     (prod)          (локально: :8080)
+```
+
+- `edge` — единственная сеть с доступом наружу; наружу опубликован только `caddy` (в проде) или `frontend` (локально).
+- `app` и `data` — `internal: true`: у backend и mongo нет выхода в интернет, и они недоступны с хоста. frontend не видит mongo.
+- nginx: rate limit (`/api/auth/login|register` — 10 запросов/мин с одного IP, остальной `/api` — 20 запросов/с; при превышении 429), gzip, заголовки безопасности, реальный IP клиента из `X-Forwarded-For`.
+- Healthchecks: `GET /api/health` (backend), `GET /healthz` (nginx); сервисы стартуют по готовности зависимостей.
+
+## Продакшен (HTTPS)
+
+На сервере с Docker: откройте порты 80 и 443, направьте A-запись домена на IP сервера и задайте в `.env` переменные `DOMAIN` и `JWT_SECRET`.
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+Caddy сам получит и будет обновлять сертификат Let's Encrypt. Порт 8080 в этом режиме не публикуется.
 
 ## Локальная разработка без Docker
 

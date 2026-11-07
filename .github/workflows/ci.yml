@@ -42,6 +42,10 @@ jobs:
     needs: [frontend, backend]
     steps:
       - uses: actions/checkout@v4
+      - run: docker compose -f docker-compose.yml -f docker-compose.prod.yml config -q
+        env:
+          JWT_SECRET: ci
+          DOMAIN: example.com
       - run: docker compose build
         env:
           JWT_SECRET: ci
