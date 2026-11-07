@@ -41,7 +41,7 @@ docker compose down -v           # остановить и удалить дан
 
 - `edge` — единственная сеть с доступом наружу; наружу опубликован только `caddy` (в проде) или `frontend` (локально).
 - `app` и `data` — `internal: true`: у backend и mongo нет выхода в интернет, и они недоступны с хоста. frontend не видит mongo.
-- nginx: rate limit (`/api/auth/login|register` — 10 запросов/мин с одного IP, остальной `/api` — 20 запросов/с; при превышении 429), gzip, заголовки безопасности, реальный IP клиента из `X-Forwarded-For`.
+- nginx: rate limit (`/api/auth/login|register` — 10 запросов/мин с одного IP, остальной `/api` — 20 запросов/с; при превышении 429), gzip, заголовки безопасности, реальный IP клиента из `X-Forwarded-For` (доверяется только сети `edge`, `172.30.250.0/24`).
 - Healthchecks: `GET /api/health` (backend), `GET /healthz` (nginx); сервисы стартуют по готовности зависимостей.
 
 ## Продакшен (HTTPS)

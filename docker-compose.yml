@@ -58,6 +58,9 @@ services:
 
 networks:
   edge:
+    ipam:
+      config:
+        - subnet: 172.30.250.0/24
   app:
     internal: true
   data:
