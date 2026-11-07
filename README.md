@@ -7,7 +7,7 @@
 Нужны Docker и Docker Compose.
 
 ```bash
-cp .env.example .env          # при необходимости поменяйте APP_PORT и JWT_SECRET
+cp .env.example .env          # впишите JWT_SECRET (openssl rand -hex 32)
 docker compose up -d --build  # mongo + backend + frontend (nginx)
 docker compose --profile seed run --rm seed   # один раз: заполнить категории
 ```

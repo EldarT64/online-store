@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
     environment:
       MONGO_URI: mongodb://mongo:27017/online-shop
-      JWT_SECRET: ${JWT_SECRET:-change_me}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       PORT: 8000
     volumes:
       - uploads:/app/uploads
