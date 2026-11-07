@@ -16,10 +16,7 @@ const categories = [
 
 const seedCategories = async () => {
     try {
-        await mongoose.connect(config.mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(config.mongoURI);
 
         console.log('Connected to MongoDB');
 
